@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Леся Шуткевич — AI Visual Maker</title>
+<meta name="description" content="AI Visual Maker — портфоліо Лесі Шуткевич. Комерційний AI-візуал, який продає: фотосесії, предметка, косметика, fashion, ювелірка, AI-відео." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --blue:#0140A6; --blue-mid:#1A56C4; --blue-light:#4A7ED8; --blue-pale:#7AAAF0;
+  --dark:#121212; --white:#FFFFFF; --bg-light:#F4F6FB; --bg-blue:#EDF2FC;
+  --border:#D0CCEA; --ink:#141420; --ink-mid:#3A3A5C; --ink-light:#8888AA;
+  --cream:#F4F5FA; --cream-mid:#A9AAC4;
+  --font-heading:"Unbounded",sans-serif; --font-body:"Raleway",sans-serif;
+  --container:1200px; --pad:24px;
+  --radius-card:12px; --radius-btn:8px;
+  --transition:.2s ease; --transition-slow:.45s ease;
+  --nav-h:66px; --ticker-h:38px; --filter-h:54px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%}
+body{font-family:var(--font-body);color:var(--ink);background:var(--white);font-weight:400;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100%}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:var(--blue);color:#fff}
+
+/* ---------- Typography helpers ---------- */
+.heading{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}
+.label{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.22em}
+.eyebrow{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.34em;font-size:11px;color:var(--blue-light)}
+.section{padding:clamp(64px,9vw,118px) var(--pad)}
+.wrap{max-width:var(--container);margin:0 auto;width:100%}
+.section-head{margin-bottom:clamp(36px,5vw,64px)}
+.section-head .eyebrow{display:block;margin-bottom:18px}
+.section-head h2{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(28px,4.4vw,46px);line-height:1.06}
+.section-head p.lede{margin-top:20px;max-width:620px;color:var(--ink-mid);font-size:clamp(15px,1.6vw,18px)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.1em;font-size:12px;padding:15px 28px;border-radius:var(--radius-btn);transition:var(--transition);white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-mid);transform:translateY(-2px);box-shadow:0 12px 30px -10px rgba(1,64,166,.55)}
+.btn-outline{border:1.5px solid currentColor;color:var(--ink)}
+.btn-outline:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-outline.on-dark{color:#fff}
+.btn-outline.on-dark:hover{background:#fff;color:var(--dark);border-color:#fff}
+.btn-light{background:#fff;color:var(--blue)}
+.btn-light:hover{transform:translateY(-2px);box-shadow:0 12px 30px -10px rgba(0,0,0,.4)}
+
+/* ---------- Lang ---------- */
+.en{display:none}
+html[data-lang="en"] .ua{display:none}
+html[data-lang="en"] .en{display:inline}
+html[data-lang="en"] .en.block{display:block}
+
+/* ---------- Cursor trail ---------- */
+#cursor-canvas{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999}
+
+/* ---------- Nav ---------- */
+nav.topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav-inner{border-bottom:1px solid var(--border)}
+.nav-inner{max-width:var(--container);margin:0 auto;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 var(--pad)}
+.brand{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:14px;white-space:nowrap}
+.brand b{color:var(--blue)}
+.nav-menu{display:flex;gap:26px;align-items:center}
+.nav-menu a{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--ink-mid);padding:6px 0;position:relative;transition:var(--transition)}
+.nav-menu a::after{content:"";position:absolute;left:0;right:100%;bottom:-2px;height:2px;background:var(--blue);transition:right .28s ease}
+.nav-menu a:hover{color:var(--ink)}
+.nav-menu a.active{color:var(--blue)}
+.nav-menu a.active::after{right:0}
+.nav-right{display:flex;align-items:center;gap:18px}
+.lang-switch{display:flex;gap:2px;align-items:center}
+.lang-btn{font-family:var(--font-heading);font-size:11px;font-weight:600;color:var(--ink-light);padding:4px 5px;letter-spacing:.06em;transition:var(--transition)}
+.lang-btn.active{color:var(--blue);border-bottom:2px solid var(--blue)}
+.lang-sep{color:var(--border)}
+.burger{display:none;flex-direction:column;gap:5px;padding:8px}
+.burger span{width:24px;height:2px;background:var(--ink);transition:var(--transition)}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ---------- Hero ---------- */
+.hero{background:var(--dark);color:#fff;min-height:calc(100vh - var(--nav-h));display:flex;align-items:center;padding:clamp(48px,7vw,90px) var(--pad)}
+.hero-inner{max-width:var(--container);margin:0 auto;width:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(36px,5vw,80px);align-items:center}
+.hero-eyebrow{color:var(--blue-light);margin-bottom:26px}
+.hero h1{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(34px,6vw,68px);line-height:1.02;color:#fff}
+.hero .sub{margin-top:22px;font-size:clamp(15px,1.7vw,19px);color:#C7C8D8;font-weight:300;letter-spacing:.01em}
+.hero .tagline{margin-top:26px;max-width:440px;color:#9A9BB0;font-size:clamp(14px,1.5vw,16px)}
+.hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+.hero-photo{position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden}
+
+/* ---------- Placeholder visual ---------- */
+.ph{position:relative;display:flex;align-items:center;justify-content:center;background:
+   repeating-linear-gradient(135deg,#e9ecf6 0 14px,#eff2fa 14px 28px);
+   border:1px solid var(--border);overflow:hidden}
+.ph.dark{background:repeating-linear-gradient(135deg,#1b1b1f 0 14px,#202024 14px 28px);border-color:#2a2a30}
+.ph-label{font-family:"Courier New",monospace;font-size:11px;letter-spacing:.04em;color:var(--blue);background:rgba(255,255,255,.82);padding:5px 9px;border-radius:5px;border:1px solid var(--border);max-width:88%;text-align:center;line-height:1.4;word-break:break-all}
+.ph.dark .ph-label{color:var(--blue-pale);background:rgba(18,18,18,.7);border-color:#2f2f38}
+.hero-photo .ph-label{font-size:12px}
+
+/* ---------- Ticker ---------- */
+.ticker{overflow:hidden;white-space:nowrap;display:flex;user-select:none;width:100%;max-width:100%}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track{display:inline-flex;flex-shrink:0;align-items:center;animation:tickerScroll 30s linear infinite;will-change:transform}
+.ticker.reverse .ticker-track{animation-name:tickerScrollRev;animation-duration:26s}
+.ticker span{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.2em;font-size:clamp(13px,1.5vw,16px);padding:0 4px}
+.ticker .dot{opacity:.5;padding:0 22px}
+.ticker-blue{background:var(--blue);color:#fff;padding:20px 0}
+.ticker-light{background:var(--bg-light);color:var(--blue-mid);padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes tickerScrollRev{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+/* ---------- About ---------- */
+.about-top{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-bottom:60px}
+.about-left{display:flex;flex-direction:column;gap:20px}
+.about-left .eyebrow{display:block}
+.about-left h2{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(28px,4.4vw,46px);line-height:1.06}
+.about-left p{color:var(--ink-mid);font-size:clamp(15px,1.7vw,18px)}
+.about-left p strong{color:var(--ink);font-weight:600}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;align-self:start}
+.counter{background:#fff;padding:30px 26px}
+.counter .idx{font-family:var(--font-heading);font-size:11px;color:var(--blue-light);letter-spacing:.1em}
+.counter .num{font-family:var(--font-heading);font-weight:600;font-size:clamp(34px,4.6vw,52px);color:var(--blue);line-height:1;margin:14px 0 12px}
+.counter .cap{font-family:var(--font-heading);font-weight:300;text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;color:var(--ink-mid);line-height:1.5}
+.advantages-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:0}
+.advantage-card{background:var(--bg-light);border-radius:12px;padding:28px;border-top:3px solid var(--blue)}
+.advantage-card.full-width{grid-column:1/-1}
+.advantage-icon{color:var(--blue);font-size:20px;margin-bottom:12px}
+.advantage-title{font-family:var(--font-heading);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink);margin-bottom:10px}
+.advantage-text{font-family:var(--font-body);font-size:14px;color:var(--ink-mid);line-height:1.7}
+.tools-block{margin-top:clamp(48px,6vw,72px);border-top:1px solid var(--border);padding-top:36px}
+.tools-block .label{display:block;font-size:11px;color:var(--ink-light);letter-spacing:.2em;margin-bottom:20px}
+.tools{display:flex;flex-wrap:wrap;gap:9px}
+.tools .tag{font-family:var(--font-body);font-weight:500;font-size:12.5px;color:var(--ink-mid);background:var(--bg-light);border:1px solid var(--border);padding:7px 13px;border-radius:20px;transition:var(--transition)}
+.tools .tag:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* ---------- Services accordion ---------- */
+.services{background:var(--bg-light)}
+.acc-list{display:flex;flex-direction:column;gap:12px}
+.acc{background:#fff;border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;transition:var(--transition)}
+.acc.open{border-color:var(--blue);box-shadow:0 14px 40px -22px rgba(1,64,166,.4)}
+.acc-head{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;text-align:left}
+.acc-head .t{display:flex;align-items:center;gap:16px}
+.acc-head .diamond{color:var(--blue-light);font-size:13px}
+.acc-head h3{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(14px,1.7vw,17px);color:var(--ink)}
+.acc.open .acc-head{border-left:3px solid var(--blue);background:var(--bg-blue)}
+.acc-icon{flex:0 0 auto;width:30px;height:30px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--blue);transition:var(--transition)}
+.acc.open .acc-icon{background:var(--blue);color:#fff;border-color:var(--blue)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.acc-body-inner{padding:12px 24px 24px 24px}
+.acc-body-inner p{color:var(--ink-mid);font-size:15px;max-width:680px;line-height:1.75}
+.acc-tags{display:none}
+.services-note{margin-top:32px;text-align:center;color:var(--ink-mid);font-size:15px;font-style:italic}
+
+/* ---------- Portfolio ---------- */
+.portfolio{background:#fff;position:relative}
+.filter-bar{position:sticky;top:calc(var(--nav-h) + var(--ticker-h));z-index:90;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.filter-tabs{max-width:var(--container);margin:0 auto;display:flex;gap:8px;padding:13px var(--pad);overflow-x:auto;scrollbar-width:none}
+.filter-tabs::-webkit-scrollbar{display:none}
+.filter-tabs button{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:var(--ink-mid);padding:9px 15px;border-radius:20px;border:1px solid var(--border);white-space:nowrap;transition:var(--transition)}
+.filter-tabs button:hover{border-color:var(--blue-light);color:var(--blue)}
+.filter-tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cases-stack{position:relative}
+.case{background:#fff;padding:clamp(44px,6vw,80px) var(--pad);border-top:1px solid var(--border)}
+.case-inner{max-width:var(--container);margin:0 auto}
+.case-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:26px}
+.case-top .num{font-family:var(--font-heading);font-weight:300;font-size:13px;color:var(--blue-light);letter-spacing:.1em;display:block;margin-bottom:12px}
+.case-top h3{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(22px,3.2vw,38px);color:var(--ink)}
+.case-top .folder{font-family:"Courier New",monospace;font-size:12px;color:var(--ink-light)}
+.subfilter{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px}
+.subfilter button{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.05em;font-size:10px;color:var(--ink-mid);padding:7px 12px;border-radius:16px;border:1px solid var(--border);transition:var(--transition)}
+.subfilter button:hover{border-color:var(--blue-light);color:var(--blue)}
+.subfilter button.active{background:var(--blue-mid);color:#fff;border-color:var(--blue-mid)}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+.tile{aspect-ratio:3/4;height:auto;border-radius:10px;cursor:pointer;transition:transform .4s ease,box-shadow .4s ease;overflow:hidden;position:relative}
+.tile:hover{transform:translateY(-5px);box-shadow:0 24px 50px -18px rgba(20,20,32,.5)}
+.tile.hide{display:none}
+.tile img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .55s ease}
+.tile:hover img{transform:scale(1.05)}
+.tile .tile-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(1,64,166,.28) 0%,transparent 55%);opacity:0;transition:opacity .4s ease}
+.tile:hover .tile-ov{opacity:1}
+
+/* Visual grid: fixed height, natural width, flex wrap */
+.photo-grid[data-grid="visual"]{display:flex!important;flex-wrap:wrap!important;gap:10px!important;align-items:flex-start!important;justify-content:center!important}
+.photo-grid[data-grid="visual"] .tile{aspect-ratio:unset!important;height:auto!important;width:auto!important;flex:0 0 auto!important}
+.photo-grid[data-grid="visual"] .tile img{height:280px!important;width:auto!important;object-fit:unset!important;object-position:unset!important;border-radius:8px!important;display:block!important;flex-shrink:0!important}
+
+/* ---------- Video ---------- */
+.video{background:var(--dark);color:#fff}
+.video .section-head h2{color:#fff}
+.video .section-head .lede{color:#A9AAC4}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.vcard{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;background:#000;aspect-ratio:9/16}
+.vcard .poster{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:
+   radial-gradient(120% 80% at 50% 0%,#23232b 0%,#121214 70%);transition:var(--transition)}
+.vcard .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease;z-index:1;pointer-events:none}
+.vcard .thumb.loaded{opacity:1}
+.vcard .vid-num,.vcard .play{position:relative;z-index:2}
+.vcard .vid-num{position:absolute;top:14px;left:16px;font-family:var(--font-heading);font-size:12px;color:var(--blue-pale);letter-spacing:.1em;z-index:3}
+.vcard .play{width:56px;height:56px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;color:#fff;transition:var(--transition);z-index:3}
+.vcard .play svg{margin-left:3px}
+.vcard:hover .play{background:var(--blue);border-color:var(--blue);transform:scale(1.08)}
+.vcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+.vcard .vlabel{position:absolute;bottom:14px;left:16px;font-family:"Courier New",monospace;font-size:10px;color:#6f7088;z-index:3}
+
+/* ---------- Process ---------- */
+.process{background:var(--bg-light)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden}
+.step{background:#fff;padding:clamp(28px,3vw,40px) clamp(24px,2.5vw,34px);min-height:230px;display:flex;flex-direction:column;transition:var(--transition)}
+.step:hover{background:var(--bg-blue)}
+.step .pnum{font-family:var(--font-heading);font-weight:600;font-size:clamp(30px,3.6vw,46px);color:var(--blue-pale);line-height:1;margin-bottom:22px}
+.step:hover .pnum{color:var(--blue)}
+.step h4{font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.04em;font-size:14px;margin-bottom:14px;color:var(--ink)}
+.step p{font-size:14px;color:var(--ink-mid);line-height:1.7}
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--dark);color:#fff}
+.faq .section-head h2{color:#fff}
+.faq-list{display:flex;flex-direction:column;max-width:100%}
+.faq-item{border-bottom:1px solid #2a2a32}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 6px;text-align:left}
+.faq-q h3{font-family:var(--font-body);font-weight:600;font-size:clamp(16px,1.9vw,20px);color:#fff}
+.faq-q .qi{flex:0 0 auto;font-size:24px;color:var(--blue-pale);transition:transform .3s ease;font-weight:300}
+.faq-item.open .qi{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a-inner{padding:0 6px 28px;max-width:720px}
+.faq-a-inner p{color:var(--cream-mid);font-size:15.5px;line-height:1.8}
+.faq-a-inner .btn{margin-top:20px}
+.faq-a-inner .ig-link{display:inline-block;margin-top:12px;font-size:14px;color:var(--blue-pale);text-decoration:underline;text-underline-offset:3px}
+.faq-cta{margin-top:46px;display:flex;justify-content:center}
+
+/* ---------- Footer ---------- */
+footer{background:var(--blue);color:#fff;padding:clamp(56px,7vw,90px) var(--pad) 40px}
+.footer-inner{max-width:var(--container);margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.2)}
+.footer-brand h3{font-family:var(--font-heading);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(24px,3.2vw,38px);line-height:1.05}
+.footer-brand .role{margin-top:14px;color:#CFE0FF;font-size:15px;font-weight:300;letter-spacing:.02em}
+.footer-brand .mail{margin-top:24px;display:inline-block;font-family:var(--font-heading);font-size:13px;letter-spacing:.04em;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:3px;transition:var(--transition)}
+.footer-brand .mail:hover{border-color:#fff}
+.footer-links{display:flex;flex-direction:column;gap:14px;text-align:right}
+.footer-links a{display:inline-flex;justify-content:flex-end;gap:10px;font-family:var(--font-heading);font-weight:400;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:#DCE8FF;transition:var(--transition)}
+.footer-links a:hover{color:#fff;transform:translateX(-3px)}
+.footer-cta-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-end;margin-top:18px}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-top:26px}
+.footer-bottom span{font-family:var(--font-heading);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#A9C3F0}
+
+/* ---------- Reveal ---------- */
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+/* hero word animation */
+@keyframes wordUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+.hero-word{display:inline-block;opacity:0}
+.hero-word.go{animation:wordUp .7s cubic-bezier(.16,1,.3,1) forwards}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.ticker-track{animation:none}}
+
+/* ---------- Lightbox ---------- */
+.lightbox{position:fixed;inset:0;z-index:10000;background:rgba(8,8,12,.94);display:none;align-items:center;justify-content:center;padding:40px;backdrop-filter:blur(6px)}
+.lightbox.open{display:flex}
+.lb-content{position:relative;max-width:min(92vw,900px);width:100%}
+.lb-stage{width:100%;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#111}
+.lb-photo{aspect-ratio:4/5;display:flex;align-items:center;justify-content:center}
+.lb-video{position:relative;width:min(90vw,calc(85vh * 9/16));aspect-ratio:9/16;margin:0 auto}
+.lb-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.lb-close{position:absolute;top:-46px;right:0;width:40px;height:40px;border:1px solid rgba(255,255,255,.4);border-radius:50%;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.lb-close:hover{background:#fff;color:#111}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border:1px solid rgba(255,255,255,.4);border-radius:50%;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+.lb-nav:hover{background:#fff;color:#111}
+.lb-prev{left:-66px}.lb-next{right:-66px}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1024px){
+  .burger{display:flex}
+  .nav-menu{position:fixed;top:calc(var(--nav-h) + var(--ticker-h));left:0;right:0;flex-direction:column;background:#fff;border-bottom:1px solid var(--border);padding:14px var(--pad) 24px;gap:4px;transform:translateY(-12px);opacity:0;pointer-events:none;transition:var(--transition)}
+  .nav-menu.open{transform:none;opacity:1;pointer-events:auto}
+  .nav-menu a{padding:12px 0;font-size:13px;width:100%;border-bottom:1px solid var(--bg-light)}
+  .nav-menu a::after{display:none}
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-photo{max-width:440px;order:-1}
+  .about-top{grid-template-columns:1fr;gap:40px}
+  .advantages-grid{grid-template-columns:1fr}
+  .video-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:768px){
+  :root{--pad:16px}
+  /* === NAV mobile === */
+  .brand{display:none}
+  nav.topbar{top:0}
+  .nav-right{margin-left:auto}
+  .nav-inner{padding:10px 16px;gap:10px}
+  .btn.btn-primary.nav-cta{font-size:10px;padding:8px 14px;white-space:nowrap}
+  /* === Hero mobile === */
+  .hero{padding:76px 16px 52px}
+  .hero-inner{gap:28px}
+  .hero-photo{max-width:100%;order:-1}
+  /* === Photo grids mobile === */
+  .photo-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .photo-grid[data-grid="visual"]{gap:8px!important}
+  .photo-grid[data-grid="visual"] .tile img{height:160px!important}
+  /* === Accordion mobile === */
+  .acc-head{padding:16px 16px}
+  .acc-body-inner{padding:0 16px 16px 16px}
+  /* === misc === */
+  .advantages{grid-template-columns:1fr}
+  .adv.wide{grid-column:auto}
+  .counters{grid-template-columns:1fr 1fr}
+  #cursor-canvas{display:none}
+  .lb-prev{left:6px}.lb-next{right:6px}
+  .lb-close{top:-44px}
+}
+@media (max-width:560px){
+  .video-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr}
+  .counters{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .footer-links,.footer-cta-row{text-align:left;align-items:flex-start;justify-content:flex-start}
+  .footer-links a{justify-content:flex-start}
+}
+@media (max-width:380px){
+  :root{--pad:16px}
+}
+</style>
+</head>
+<body>
+<canvas id="cursor-canvas"></canvas>
+
+<!-- ============ NAV ============ -->
+<nav class="topbar">
+  <div class="nav-inner">
+    <a href="#hero" class="brand"><b>ЛЕСЯ</b> ШУТКЕВИЧ</a>
+    <div class="nav-menu" id="navMenu">
+      <a href="#about"><span class="ua">Про мене</span><span class="en">About</span></a>
+      <a href="#services"><span class="ua">Послуги</span><span class="en">Services</span></a>
+      <a href="#portfolio"><span class="ua">Кейси</span><span class="en">Portfolio</span></a>
+      <a href="#video"><span class="ua">Відео</span><span class="en">Video</span></a>
+      <a href="#process"><span class="ua">Процес</span><span class="en">Process</span></a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="uk">UA</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <a href="https://t.me/darknesss_lady" target="_blank" rel="noopener" class="btn btn-primary nav-cta"><span class="ua">Написати мені</span><span class="en">Get in touch</span></a>
+      <button class="burger" id="burger" aria-label="menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="ticker ticker-blue" aria-hidden="true"><div class="ticker-track" id="ticker1"></div></div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-text reveal">
+      <div class="eyebrow hero-eyebrow">AI Visual Maker</div>
+      <h1>Леся<br />Шуткевич</h1>
+      <div class="sub"><span class="ua">AI-візуалізатор · Дизайнер · Викладач</span><span class="en">AI Visualizer · Designer · Educator</span></div>
+      <p class="tagline"><span class="ua">Комерційний AI-візуал, який продає — для брендів, особистих блогів і комерції.</span><span class="en">Commercial AI visuals that sell — for brands, personal blogs and commerce.</span></p>
+      <div class="hero-cta">
+        <a href="#portfolio" class="btn btn-primary"><span class="ua">Переглянути кейси</span><span class="en">View portfolio</span></a>
+        <a href="https://t.me/darknesss_lady" target="_blank" rel="noopener" class="btn btn-outline on-dark"><span class="ua">Написати мені</span><span class="en">Get in touch</span></a>
+      </div>
+    </div>
+    <div class="hero-photo reveal">
+      <img src="main.webp" alt="Леся Шуткевич — AI Visual Maker" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:14px" />
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="about-top">
+      <div class="about-left reveal">
+        <span class="eyebrow">01 — <span class="ua">Про мене</span><span class="en">About me</span></span>
+        <h2><span class="ua">Про мене</span><span class="en">About me</span></h2>
+        <p class="ua">Мене звати <strong>Леся Шуткевич</strong>, я AI-візуалізатор, дизайнер і викладач. Понад 8 років я на фрілансі, 6+ років активно займаюсь дизайном і візуалом для Instagram, і більше року активно працюю з AI-контентом.</p>
+        <p class="ua">Я не просто генерую зображення — я створюю <strong>комерційний візуал, який продає</strong>: для брендів, особистих блогів і комерції. За плечима — 450+ кейсів у дизайні та AI, і я є автором курсу «AI Visual Maker».</p>
+        <p class="en block">My name is <strong>Lesia Shutkevych</strong> — I'm an AI visualizer, designer and educator. I've spent 8+ years freelancing, 6+ years working on design and visuals for Instagram, and over a year actively working with AI content.</p>
+        <p class="en block">I don't just generate images — I create <strong>commercial visuals that sell</strong>: for brands, personal blogs and commerce. Behind me are 450+ cases in design and AI, and I'm the author of the «AI Visual Maker» course.</p>
+      </div>
+      <div class="about-stats reveal" id="counters">
+        <div class="counter"><span class="idx">+ 01</span><div class="num" data-target="450" data-suffix="+">0</div><div class="cap"><span class="ua">Кейсів у дизайні та AI</span><span class="en">Cases in design &amp; AI</span></div></div>
+        <div class="counter"><span class="idx">+ 02</span><div class="num" data-target="500" data-suffix="+">0</div><div class="cap"><span class="ua">Учнів на курсах</span><span class="en">Course students</span></div></div>
+        <div class="counter"><span class="idx">+ 03</span><div class="num" data-target="8" data-suffix="+">0</div><div class="cap"><span class="ua">Років на фрілансі</span><span class="en">Years freelancing</span></div></div>
+        <div class="counter"><span class="idx">+ 04</span><div class="num" data-target="25" data-suffix="+">0</div><div class="cap"><span class="ua">Інструментів у роботі</span><span class="en">Tools in use</span></div></div>
+      </div>
+    </div>
+
+    <div class="advantages-grid">
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">▸</div>
+        <div class="advantage-title"><span class="ua">Дизайнерський бекграунд</span><span class="en">Designer background</span></div>
+        <div class="advantage-text"><span class="ua">6+ років у сфері дизайну та візуалу. Я не просто працюю з нейромережами — я розумію композицію, кольори, світло, подачу та комерційну естетику. Саме тому мої роботи виглядають дорого, атмосферно і цілісно.</span><span class="en">6+ years in design and visuals. I don't just work with neural networks — I understand composition, colors, light, presentation and commercial aesthetics. That's why the work looks expensive, atmospheric and cohesive.</span></div>
+      </div>
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">▸</div>
+        <div class="advantage-title"><span class="ua">Комерційне мислення</span><span class="en">Commercial thinking</span></div>
+        <div class="advantage-text"><span class="ua">Для мене AI — це не просто красиві картинки. Я створюю контент, який привертає увагу, викликає емоції та допомагає брендам продавати.</span><span class="en">For me AI isn't just pretty pictures. I create content that grabs attention, evokes emotion and helps brands sell.</span></div>
+      </div>
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">▸</div>
+        <div class="advantage-title"><span class="ua">Реальні кейси</span><span class="en">Real cases</span></div>
+        <div class="advantage-text"><span class="ua">Усе, що ви бачите в моєму портфоліо — створено мною особисто. Без чужих робіт, шаблонів чи стокових прикладів.</span><span class="en">Everything you see in my portfolio was created by me personally. No one else's work, no templates, no stock examples.</span></div>
+      </div>
+      <div class="advantage-card reveal">
+        <div class="advantage-icon">▸</div>
+        <div class="advantage-title"><span class="ua">Постійний розвиток</span><span class="en">Constant growth</span></div>
+        <div class="advantage-text"><span class="ua">AI змінюється буквально щотижня — і я постійно навчаюсь разом із ним. Тестую нові моделі, сервіси та підходи й регулярно оновлюю свої знання та матеріали.</span><span class="en">AI changes every week — and I keep learning alongside it. I test new models, services and approaches and regularly update my knowledge.</span></div>
+      </div>
+      <div class="advantage-card full-width reveal">
+        <div class="advantage-icon">▸</div>
+        <div class="advantage-title"><span class="ua">Поєднання AI + дизайну</span><span class="en">AI + design combined</span></div>
+        <div class="advantage-text"><span class="ua">Більшість AI-спеціалістів вміють просто генерувати картинки. Але далеко не всі вміють поєднати їх у цілісний, стильний і комерційно сильний візуал. Саме тут допомагає мій багаторічний досвід у дизайні, Photoshop та Figma.</span><span class="en">Most AI specialists can just generate pictures. But few can combine them into a cohesive, stylish and commercially strong visual. This is where my years of experience in design, Photoshop and Figma really help.</span></div>
+      </div>
+    </div>
+
+    <div class="tools-block reveal">
+      <span class="label"><span class="ua">Інструменти в роботі</span><span class="en">Tools I work with</span></span>
+      <div class="tools" id="tools"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section services" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">02 — <span class="ua">Що я роблю</span><span class="en">Services</span></span>
+      <h2><span class="ua">Що я роблю</span><span class="en">What I do</span></h2>
+      <p class="lede"><span class="ua">Повний спектр AI-візуалу — від одного фото до комплексного контенту для бренду.</span><span class="en">A full spectrum of AI visuals — from a single photo to complete content for a brand.</span></p>
+    </div>
+    <div class="acc-list" id="servicesList"></div>
+    <p class="services-note reveal"><span class="ua">Не знайшли потрібний формат? Просто напишіть мені — я відкрита до нестандартних та індивідуальних AI-проєктів.</span><span class="en">Didn't find the format you need? Just message me — I'm open to non-standard and custom AI projects.</span></p>
+  </div>
+</section>
+
+<!-- ============ TICKER 2 ============ -->
+<div class="ticker ticker-blue reverse" aria-hidden="true"><div class="ticker-track" id="ticker2"></div></div>
+
+<!-- ============ PORTFOLIO ============ -->
+<section class="portfolio" id="portfolio">
+  <div class="section-head wrap reveal" style="padding:clamp(64px,9vw,110px) var(--pad) 0">
+    <span class="eyebrow">03 — <span class="ua">Ніші та кейси</span><span class="en">Portfolio</span></span>
+    <h2><span class="ua">Ніші та кейси</span><span class="en">Niches &amp; cases</span></h2>
+  </div>
+  <div class="filter-bar">
+    <div class="filter-tabs" id="filterTabs"></div>
+  </div>
+  <div class="cases-stack" id="casesStack"></div>
+</section>
+
+<!-- ============ VIDEO ============ -->
+<section class="section video" id="video">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">04 — AI <span class="ua">Відео</span><span class="en">Video</span></span>
+      <h2>AI-<span class="ua">відео</span><span class="en">video</span></h2>
+      <p class="lede">Reels · TikTok · UGC · <span class="ua">Сюрреалізм · Моушн · Реклама</span><span class="en">Surreal · Motion · Ads</span></p>
+    </div>
+    <div class="video-grid" id="videoGrid"></div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section process" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">05 — <span class="ua">Як я працюю</span><span class="en">Process</span></span>
+      <h2><span class="ua">Як я працюю</span><span class="en">How I work</span></h2>
+    </div>
+    <div class="steps" id="steps"></div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">06 — FAQ</span>
+      <h2><span class="ua">Часті запитання</span><span class="en">Frequently asked</span></h2>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+    <div class="faq-cta reveal">
+      <a href="https://aivisualprice.netlify.app/" target="_blank" rel="noopener" class="btn btn-primary"><span class="ua">Прайс-калькулятор</span><span class="en">Price calculator</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contacts">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand reveal">
+        <h3>Леся Шуткевич</h3>
+        <div class="role"><span class="ua">AI-візуалізатор · Дизайнер · Викладач</span><span class="en">AI Visualizer · Designer · Educator</span></div>
+        <a href="/cdn-cgi/l/email-protection#670b02140b0e110927000a060e0b4904080a" class="mail"><span class="__cf_email__" data-cfemail="38545d4b54514e56785f55595154165b5755">[email&#160;protected]</span></a>
+      </div>
+      <div class="footer-side reveal">
+        <div class="footer-links">
+          <a href="https://www.instagram.com/i_love_vizual/" target="_blank" rel="noopener">Instagram · @i_love_vizual</a>
+          <a href="https://www.instagram.com/visualmaker.agency/" target="_blank" rel="noopener">Cases · @visualmaker.agency</a>
+          <a href="https://t.me/darknesss_lady" target="_blank" rel="noopener">Telegram · @darknesss_lady</a>
+        </div>
+        <div class="footer-cta-row">
+          <a href="https://aivisualprice.netlify.app/" target="_blank" rel="noopener" class="btn btn-outline on-dark"><span class="ua">Прайс</span><span class="en">Pricing</span></a>
+          <a href="https://t.me/darknesss_lady" target="_blank" rel="noopener" class="btn btn-light"><span class="ua">Написати мені</span><span class="en">Get in touch</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lesia Shutkevych · AI Visual Maker</span>
+      <span>visualmaker.agency</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-content">
+    <button class="lb-close" id="lbClose" aria-label="close">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="prev">&#8249;</button>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="next">&#8250;</button>
+    <div class="lb-stage" id="lbStage"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+/* =================== DATA =================== */
+const TOOLS = ["ChatGPT","Midjourney","Higgsfield","Magnific","Ideogram","Claude","Grok","Recraft","Imagen 4","Nano Banana","Gemini","Seedream","Flux","Luma","Reve","Kling","Veo","Seedance","Minimax Hailuo","ElevenLabs","CapCut","Perplexity","Photoshop","Figma","Canva"];
+
+const SERVICES = [
+ {ua:"AI-фотосесії",en:"AI photoshoots",dua:"Портретні, fashion та lifestyle-зйомки з реальними людьми або AI-моделями. Одиночні, парні та концептуальні фотосесії для блогів, брендів і особистих сторінок.",den:"Portrait, fashion and lifestyle shoots with real people or AI models. Solo, couple and conceptual photoshoots for blogs, brands and personal pages.",tags:[]},
+ {ua:"Предметна зйомка (AI)",en:"Product photography (AI)",dua:"Косметика, парфуми, ювелірка, аксесуари, взуття, сумки та інші товари.",den:"Cosmetics, perfume, jewelry, accessories, shoes, bags and other products.",tags:[]},
+ {ua:"Fashion та одяг",en:"Fashion & clothing",dua:"AI-контент для брендів одягу: лукбуки, moodboard, fashion-кадри, розкладки та контент для соцмереж. Робота як з AI-моделями, так і з реальними фото.",den:"AI content for clothing brands: lookbooks, moodboards, fashion shots, layouts and social content. Working with both AI models and real photos.",tags:[]},
+ {ua:"Цілісний AI-візуал",en:"Cohesive AI visuals",dua:"Повноцінний візуальний стиль для Instagram: розкладка + окремі фото + єдина концепція. Для особистих блогів, брендів і комерційних акаунтів.",den:"A complete visual style for Instagram: grid layout + individual photos + one unified concept. For personal blogs, brands and commercial accounts.",tags:[]},
+ {ua:"Створення AI-моделі",en:"AI model creation",dua:"Генерація унікальних AI-персонажів, digital-моделей та AI-двійників для брендів, блогерів та комерційних проєктів.",den:"Generation of unique AI characters, digital models and AI twins for brands, bloggers and commercial projects.",tags:[]},
+ {ua:"AI-відео контент",en:"AI video content",dua:"AI-відео для Reels, TikTok, реклами та соцмереж: fashion, UGC, product-video, motion, cinematic та сюрреалістичний контент.",den:"AI video for Reels, TikTok, ads and social media: fashion, UGC, product video, motion, cinematic and surreal content.",tags:[]},
+ {ua:"Купальники та білизна",en:"Swimwear & lingerie",dua:"Делікатний і стильний візуал для нижньої білизни та купальників.",den:"Delicate and stylish visuals for lingerie and swimwear.",tags:[]},
+ {ua:"Ювелірний AI-візуал",en:"Jewelry AI visuals",dua:"Стильний контент для ювелірних брендів: прикраси на моделі або у предметній композиції з акцентом на текстуру, блиск та деталі.",den:"Stylish content for jewelry brands: jewelry on a model or in product compositions with emphasis on texture, shine and detail.",tags:[]}
+];
+
+const CATS = [
+ {id:"product",n:"01",ua:"AI Предметна зйомка",en:"AI product photography",folder:"product",subs:["byredo","dazzly","demain-beauty","lipss","prada-balenciaga","sincerely-yours","tom-ford","valentino"],per:3,fua:"Предметка",fen:"Product"},
+ {id:"photoshoot",n:"02",ua:"AI-фотосесії",en:"AI photoshoots",folder:"photoshoot",subs:["model","newyear","couple","pepper","snow"],per:3,fua:"Фотосесії",fen:"Photoshoots"},
+ {id:"swimwear",n:"03",ua:"Купальники і білизна",en:"Swimwear & lingerie",folder:"swimwear",subs:[],count:6,fua:"Купальники",fen:"Swimwear"},
+ {id:"ai-model",n:"04",ua:"Генерація AI-моделей",en:"AI model generation",folder:"ai-model",subs:[],count:6,fua:"AI-моделі",fen:"AI models"},
+ {id:"cosmetics",n:"05",ua:"Косметика + модель",en:"Cosmetics + model",folder:"cosmetics",subs:["byoma","chanel","hermes","maybelline","shiseido"],per:3,fua:"Косметика",fen:"Cosmetics"},
+ {id:"brands",n:"06",ua:"Креатив для брендів",en:"Creative for brands",folder:"brands",subs:["chanel","dnka","gucci","hermes-ferrero","jacquemus","tiffany"],per:3,fua:"Бренди",fen:"Brands"},
+ {id:"visual",n:"07",ua:"Цілісні AI-візуали",en:"Cohesive AI visuals",folder:"visual",subs:[],count:6,fua:"Візуали",fen:"Visuals"},
+ {id:"jewelry",n:"08",ua:"Ювелірні прикраси",en:"Jewelry",folder:"jewelry",subs:["blue-red","graff","other"],per:3,fua:"Ювелірка",fen:"Jewelry"}
+];
+
+const VIDEOS = ["1197684808","1197686159","1197686775","1197687479","1197688898","1197689913","1197689855","1197690252","1199072179","1199072404","1199072779","1199072988","1199073236","1199073526","1199074020","1199074170","1199074378","1199073841"];
+
+const PROCESS = [
+ {ua:"Бриф та технічне завдання",en:"Brief & specification",dua:"Ви пишете мені в Instagram або Telegram. Ми обговорюємо задачу: нішу, стиль, референси, кількість фото чи відео, терміни та формат контенту. Я ставлю уточнюючі питання, щоб результат був не просто «красивим», а дійсно відповідав вашій задачі та стилю бренду.",den:"You message me on Instagram or Telegram. We discuss the task: niche, style, references, quantity, deadlines and format. I ask clarifying questions so the result truly matches your task and brand style."},
+ {ua:"Передоплата",en:"Prepayment",dua:"Після погодження всіх деталей вноситься передоплата 50%. Після цього я бронюю проєкт у роботі та починаю розробку.",den:"Once all details are agreed, a 50% prepayment is made. After that I reserve the project and begin work."},
+ {ua:"Розробка концепції",en:"Concept development",dua:"Аналізую вашу нішу і конкурентів, підбираю стилістику, кольорову гаму, атмосферу, референси та загальний напрямок проєкту. За потреби створюю moodboard або розкадровку для відео.",den:"I analyze your niche and competitors, choose the styling, color palette, mood, references and overall direction. If needed, I create a moodboard or storyboard for video."},
+ {ua:"Створення контенту",en:"Content creation",dua:"Генерую та відбираю найкращі кадри і працюю з постобробкою.",den:"I generate and select the best shots and handle post-processing."},
+ {ua:"Узгодження та правки",en:"Approval & revisions",dua:"Показую готовий результат або перший варіант проєкту. Ви даєте фідбек, після чого я вношу правки у межах погодженого технічного завдання.",den:"I show the finished result or a first draft. You give feedback, then I make revisions within the agreed scope."},
+ {ua:"Здача проекту",en:"Project delivery",dua:"Після фінального погодження та оплати залишку ви отримуєте готові матеріали у потрібному форматі та розмірі.",den:"After final approval and payment of the balance, you receive the finished materials in the required format and size."}
+];
+
+const FAQ = [
+ {qua:"Скільки коштує замовити роботу?",qen:"How much does it cost to order?",aua:"Вартість залежить від типу контенту, кількості фото чи відео, складності проєкту та задачі. Ви можете написати мені напряму або скористатися прайс-калькулятором для попереднього розрахунку вартості.",aen:"The price depends on the type of content, the number of photos or videos, the complexity of the project and the task. You can message me directly or use the price calculator for a preliminary estimate.",price:true},
+ {qua:"Скільки часу займає виконання?",qen:"How long does it take?",aua:"Усе залежить від обсягу та складності роботи. Невеликі проєкти займають приблизно 2–5 днів, більш складні концепції або серії контенту — від 7 до 14 днів. Терміни завжди узгоджуємо заздалегідь.",aen:"It all depends on the scope and complexity. Small projects take about 2–5 days, more complex concepts or content series — from 7 to 14 days. Deadlines are always agreed in advance."},
+ {qua:"Чи створюєте ви АІ-відео?",qen:"Do you create AI video?",aua:"Так. Створюю AI-відео для Reels, TikTok, реклами та брендів: fashion, UGC, предметні відео, cinematic-контент, motion та сюрреалістичні ролики.",aen:"Yes. I create AI video for Reels, TikTok, ads and brands: fashion, UGC, product video, cinematic content, motion and surreal clips."},
+ {qua:"Де можна побачити більше робіт?",qen:"Where can I see more work?",aua:"Більше кейсів та нових робіт ви можете знайти в моєму Instagram @visualmaker.agency — там постійно нові кейси.",aen:"You'll find more cases and new work on my Instagram @visualmaker.agency — new cases appear there all the time.",ig:true},
+ {qua:"Кому належать права на створений контент?",qen:"Who owns the rights to the created content?",aua:"Після повної оплати фінальні матеріали переходять у ваше користування. Ви можете використовувати їх для соцмереж, реклами, сайту, бренду або комерційних задач.",aen:"After full payment, the final materials become yours to use. You can use them for social media, advertising, websites, branding or commercial tasks."}
+];
+
+/* =================== HELPERS =================== */
+const $=(s,p=document)=>p.querySelector(s);
+const $$=(s,p=document)=>[...p.querySelectorAll(s)];
+const lang2=(ua,en)=>`<span class="ua">${ua}</span><span class="en block">${en}</span>`;
+
+/* =================== RENDER: tickers =================== */
+const niches=[["Ювелірка","Jewelry"],["AI-фотосесії","AI photoshoots"],["Косметика","Cosmetics"],["Fashion","Fashion"],["Купальники","Swimwear"],["Бренди","Brands"],["Цілісний візуал","Cohesive visuals"],["AI-відео","AI video"]];
+function buildTicker(el,items,render){
+  const seq=items.map(render).join('<span class="dot">·</span>');
+  el.innerHTML=(seq+'<span class="dot">·</span>')+ (seq+'<span class="dot">·</span>');
+}
+buildTicker($("#ticker1"),niches,n=>`<span><span class="ua">${n[0]}</span><span class="en">${n[1]}</span></span>`);
+const brands=Array(14).fill('КЕЙСИ');
+buildTicker($("#ticker2"),brands,b=>`<span>${b}</span>`);
+
+/* =================== RENDER: tools =================== */
+$("#tools").innerHTML=TOOLS.map(t=>`<span class="tag">${t}</span>`).join('');
+
+/* =================== RENDER: services =================== */
+$("#servicesList").innerHTML=SERVICES.map((s,i)=>`
+ <div class="acc reveal" data-acc>
+   <button class="acc-head">
+     <span class="t"><span class="diamond">◆</span><h3>${lang2(s.ua,s.en)}</h3></span>
+     <span class="acc-icon">+</span>
+   </button>
+   <div class="acc-body"><div class="acc-body-inner">
+     <p>${lang2(s.dua,s.den)}</p>
+     <div class="acc-tags">${s.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+   </div></div>
+ </div>`).join('');
+
+/* =================== RENDER: portfolio =================== */
+const PRODUCT_FILES={
+  'byredo':['byredo-01','byredo-02','byredo-03','byredo-04','byredo-05','byredo-06','byredo-07'],
+  'dazzly':['dazzly-01','dazzly-02','dazzly-03','dazzly-04'],
+  'demain-beauty':['demain-beauty-01','demain-beauty-02','demain-beauty-03','demain-beauty-04','demain-beauty-05'],
+  'lipss':['lipss-01','lipss-02','lipss-03','lipss-04','lipss-05'],
+  'prada-balenciaga':['prada-balenciaga-01','prada-balenciaga-02','prada-balenciaga-03','prada-balenciaga-04','prada-balenciaga-05','prada-balenciaga-06','prada-balenciaga-07','prada-balenciaga-08'],
+  'sincerely-yours':['sincerely-yours-01','sincerely-yours-02','sincerely-yours-03','sincerely-yours-04','sincerely-yours-05','sincerely-yours-06','sincerely-yours-07','sincerely-yours-08','sincerely-yours-09','sincerely-yours-10','sincerely-yours-11','sincerely-yours-12'],
+  'tom-ford':['tom-ford-01','tom-ford-02','tom-ford-03','tom-ford-04','tom-ford-05','tom-ford-06'],
+  'valentino':['valentino-01','valentino-02','valentino-03','valentino-04']
+};
+const PHOTOSHOOT_FILES={
+  'couple':['couple-01','couple-02','couple-03','couple-04','couple-05','couple-06','couple-07','couple-08','couple-09','couple-10','couple-11','couple-12','couple-13','couple-14'],
+  'model':['model-01','model-02','model-03','model-04','model-05','model-06','model-07','model-08','model-09','model-10','model-11','model-12'],
+  'newyear':['newyear-01','newyear-02','newyear-03','newyear-04','newyear-05','newyear-06','newyear-07','newyear-08'],
+  'pepper':['pepper-01','pepper-02','pepper-03','pepper-04','pepper-05','pepper-06','pepper-07','pepper-08'],
+  'snow':['snow-01','snow-02','snow-03','snow-04','snow-05','snow-06','snow-07','snow-08','snow-09','snow-10','snow-11']
+};
+const SWIMWEAR_FILES=['swimwear-01-25bec742','swimwear-02-523cad52','swimwear-03-fe94bc92','swimwear-04-e9fd2c95','swimwear-05-647a0ff6','swimwear-06-b17dd573','swimwear-07-15156839','swimwear-08-07541808','swimwear-09-e1f5ba1e','swimwear-10-7b03b509','swimwear-11-38fdd1e2','swimwear-12-e2ca863d','swimwear-13-bd9b4cdd','swimwear-14-4bfd1d13','swimwear-15-53df3a81','swimwear-16-fbf68240'];
+const AI_MODEL_FILES=['ai-model-01','ai-model-02','ai-model-03','ai-model-04','ai-model-05','ai-model-06','ai-model-07','ai-model-08','ai-model-09','ai-model-10','ai-model-11','ai-model-12','ai-model-13'];
+const COSMETICS_FILES={
+  'byoma':['byoma-01','byoma-02','byoma-03','byoma-04'],
+  'chanel':['chanel-01','chanel-02','chanel-03','chanel-04','chanel-05','chanel-06','chanel-07','chanel-08'],
+  'hermes':['hermes-01','hermes-02','hermes-03','hermes-04','hermes-05','hermes-06'],
+  'maybelline':['maybelline-01','maybelline-02','maybelline-03','maybelline-04','maybelline-05','maybelline-06','maybelline-07'],
+  'shiseido':['shiseido-01','shiseido-02','shiseido-03','shiseido-04','shiseido-05','shiseido-06','shiseido-07','shiseido-08','shiseido-09']
+};
+const BRANDS_FILES={
+  'chanel':['chanel-01','chanel-02','chanel-03','chanel-04','chanel-05','chanel-06','chanel-07','chanel-08','chanel-09','chanel-10','chanel-11'],
+  'dnka':['dnka-01','dnka-02','dnka-03','dnka-04','dnka-05','dnka-06','dnka-07'],
+  'gucci':['gucci-01','gucci-02','gucci-03','gucci-04','gucci-05','gucci-06','gucci-07','gucci-08','gucci-09','gucci-10','gucci-11','gucci-12'],
+  'hermes-ferrero':['hermes-ferrero-01','hermes-ferrero-02','hermes-ferrero-03','hermes-ferrero-04','hermes-ferrero-05','hermes-ferrero-06'],
+  'jacquemus':['jacquemus-01','jacquemus-02','jacquemus-03','jacquemus-04','jacquemus-05','jacquemus-06','jacquemus-07'],
+  'tiffany':['tiffany-01','tiffany-02','tiffany-03','tiffany-04','tiffany-05','tiffany-06','tiffany-07','tiffany-08']
+};
+const VISUAL_FILES=['visual-01','visual-02','visual-03','visual-04','visual-05','visual-06','visual-07','visual-08','visual-09','visual-10','visual-11'];
+const JEWELRY_FILES={
+  'blue-red':['blue-red-01','blue-red-02','blue-red-03','blue-red-04','blue-red-05','blue-red-06'],
+  'graff':['graff-01','graff-02','graff-03'],
+  'other':['other-01','other-02','other-03','other-04','other-05','other-06','other-07','other-08','other-09','other-10','other-11','other-12']
+};
+const FILES_MAP={'product':PRODUCT_FILES,'photoshoot':PHOTOSHOOT_FILES,'swimwear':SWIMWEAR_FILES,'ai-model':AI_MODEL_FILES,'cosmetics':COSMETICS_FILES,'brands':BRANDS_FILES,'visual':VISUAL_FILES,'jewelry':JEWELRY_FILES};
+function tile(file,sub,real){
+  if(real) return `<button class="tile" data-file="${file}" ${sub?`data-sub="${sub}"`:''}><img src="${file}" alt="" loading="lazy"/><span class="tile-ov"></span></button>`;
+  return `<button class="tile ph" data-file="${file}" ${sub?`data-sub="${sub}"`:''}><span class="ph-label">${file}</span></button>`;
+}
+function buildCase(c,i){
+  let tiles="";
+  const fileMap=FILES_MAP[c.id];
+  if(c.subs.length){
+    c.subs.forEach(sub=>{
+      if(fileMap&&fileMap[sub]){
+        fileMap[sub].forEach(f=>tiles+=tile(`${c.folder}/${sub}/${f}.webp`,sub,true));
+      } else {
+        for(let k=1;k<=c.per;k++) tiles+=tile(`${c.folder}/${sub}/0${String(k).padStart(2,'0')}.webp`,sub,false);
+      }
+    });
+  } else {
+    const flatFiles=FILES_MAP[c.id];
+    if(flatFiles&&Array.isArray(flatFiles)){
+      flatFiles.forEach(f=>tiles+=tile(`${c.folder}/${f}.webp`,null,true));
+    } else {
+      for(let k=1;k<=c.count;k++) tiles+=tile(`${c.folder}/0${String(k).padStart(2,'0')}.webp`,null,false);
+    }
+  }
+  const subbar=c.subs.length?`<div class="subfilter" data-cat="${c.id}">
+     <button class="active" data-sub="all">${lang2("Всі","All")}</button>
+     ${c.subs.map(s=>`<button data-sub="${s}">${s.replace(/-/g,' ')}</button>`).join('')}
+   </div>`:"";
+  return `<div class="case" id="case-${c.id}" data-cat="${c.id}">
+    <div class="case-inner">
+      <div class="case-top reveal">
+        <div><span class="num">${c.n} / 08</span><h3>${lang2(c.ua,c.en)}</h3></div>
+        <span class="folder">/${c.folder}</span>
+      </div>
+      ${subbar}
+      <div class="photo-grid" data-grid="${c.id}">${tiles}</div>
+    </div>
+  </div>`;
+}
+$("#casesStack").innerHTML=CATS.map(buildCase).join('');
+
+/* filter tabs */
+const tabs=[{id:"all",ua:"Всі",en:"All"}].concat(CATS.map(c=>({id:c.id,ua:c.fua,en:c.fen}))).concat([{id:"video",ua:"Відео",en:"Video"}]);
+$("#filterTabs").innerHTML=tabs.map((t,i)=>`<button data-target="${t.id}" class="${i===0?'active':''}">${lang2(t.ua,t.en)}</button>`).join('');
+
+/* =================== RENDER: videos =================== */
+$("#videoGrid").innerHTML=VIDEOS.map((id,i)=>`
+ <div class="vcard reveal" data-vid="${id}">
+   <div class="poster">
+     <img class="thumb" alt="" />
+     <span class="vid-num">${String(i+1).padStart(2,'0')}</span>
+     <span class="play"><svg width="16" height="18" viewBox="0 0 16 18"><path fill="currentColor" d="M0 0l16 9L0 18z"/></svg></span>
+   </div>
+ </div>`).join('');
+
+/* =================== VIMEO THUMBNAILS =================== */
+(function(){
+  $$('.vcard').forEach(card=>{
+    const id=card.dataset.vid;
+    const img=card.querySelector('.thumb');
+    fetch('https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F'+id+'&width=640')
+      .then(r=>r.json())
+      .then(d=>{if(d.thumbnail_url){img.src=d.thumbnail_url;img.onload=()=>img.classList.add('loaded');}})
+      .catch(()=>{});
+  });
+})();
+
+/* =================== RENDER: process =================== */
+$("#steps").innerHTML=PROCESS.map((p,i)=>`
+ <div class="step reveal" style="transition-delay:${i*.06}s">
+   <div class="pnum">(${String(i+1).padStart(2,'0')})</div>
+   <h4>${lang2(p.ua,p.en)}</h4>
+   <p>${lang2(p.dua,p.den)}</p>
+ </div>`).join('');
+
+/* =================== RENDER: faq =================== */
+$("#faqList").innerHTML=FAQ.map(f=>`
+ <div class="faq-item reveal" data-acc>
+   <button class="faq-q"><h3>${lang2(f.qua,f.qen)}</h3><span class="qi">+</span></button>
+   <div class="faq-a"><div class="faq-a-inner">
+     <p>${lang2(f.aua,f.aen)}</p>
+     ${f.price?`<a href="https://aivisualprice.netlify.app/" target="_blank" rel="noopener" class="btn btn-primary">${lang2("Прайс-калькулятор","Price calculator")}</a>`:''}
+     ${f.ig?`<a href="https://www.instagram.com/visualmaker.agency/" target="_blank" rel="noopener" class="ig-link">@visualmaker.agency</a>`:''}
+   </div></div>
+ </div>`).join('');
+
+/* =================== HERO ANIMATION =================== */
+(function(){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const h1=document.querySelector(".hero h1");
+  if(!h1)return;
+  // split into word spans, preserving <br>
+  const nodes=[...h1.childNodes];
+  h1.innerHTML='';
+  nodes.forEach(n=>{
+    if(n.nodeType===3){
+      n.textContent.split(/(\s+)/).forEach(w=>{
+        if(w.trim()){const s=document.createElement('span');s.className='hero-word';s.textContent=w;h1.appendChild(s);}
+        else if(w) h1.appendChild(document.createTextNode(w));
+      });
+    } else { h1.appendChild(n.cloneNode(true)); }
+  });
+  const eyebrow=document.querySelector(".hero-eyebrow");
+  if(eyebrow){eyebrow.style.opacity="0";eyebrow.style.transform="translateX(-18px)";eyebrow.style.transition="opacity .5s ease, transform .5s ease";}
+  const sub=document.querySelector(".hero .sub");
+  if(sub){sub.style.opacity="0";sub.style.transition="opacity .6s ease";}
+  const tagline=document.querySelector(".hero .tagline");
+  if(tagline){tagline.style.opacity="0";tagline.style.transition="opacity .6s ease";}
+  const cta=document.querySelector(".hero-cta");
+  if(cta){cta.style.opacity="0";cta.style.transition="opacity .6s ease";}
+  window.addEventListener("load",()=>{
+    setTimeout(()=>{
+      if(eyebrow){eyebrow.style.opacity="1";eyebrow.style.transform="none";}
+    },120);
+    $$(".hero-word").forEach((w,i)=>{
+      setTimeout(()=>w.classList.add("go"),220+i*90);
+    });
+    const lastDelay=220+($$(".hero-word").length-1)*90+700;
+    if(sub) setTimeout(()=>sub.style.opacity="1",lastDelay);
+    if(tagline) setTimeout(()=>tagline.style.opacity="1",lastDelay+120);
+    if(cta) setTimeout(()=>cta.style.opacity="1",lastDelay+260);
+  });
+})();
+
+/* =================== LANG =================== */
+(function(){
+  const saved=localStorage.getItem("lang")||"uk";
+  setLang(saved);
+  $$(".lang-btn").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+  function setLang(l){
+    document.documentElement.setAttribute("data-lang",l==="en"?"en":"uk");
+    document.documentElement.lang=l;
+    $$(".lang-btn").forEach(b=>b.classList.toggle("active",b.dataset.lang===l));
+    localStorage.setItem("lang",l);
+  }
+})();
+
+/* =================== BURGER =================== */
+(function(){
+  const b=$("#burger"),m=$("#navMenu");
+  b.addEventListener("click",()=>{b.classList.toggle("open");m.classList.toggle("open");});
+  $$("#navMenu a").forEach(a=>a.addEventListener("click",()=>{b.classList.remove("open");m.classList.remove("open");}));
+})();
+
+/* =================== CURSOR TRAIL =================== */
+(function(){
+  if('ontouchstart' in window) return;
+  const canvas=document.getElementById('cursor-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  const points=[];
+  const MAX=25;
+  let mouse={x:0,y:0};
+  let active=false;
+  window.addEventListener('mousemove',e=>{
+    mouse={x:e.clientX,y:e.clientY};
+    active=true;
+    points.push({x:e.clientX,y:e.clientY});
+    if(points.length>MAX)points.shift();
+  });
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(points.length>=2){
+      for(let i=1;i<points.length;i++){
+        const opacity=(i/points.length)*0.8;
+        const width=(i/points.length)*3;
+        ctx.beginPath();
+        ctx.moveTo(points[i-1].x,points[i-1].y);
+        ctx.lineTo(points[i].x,points[i].y);
+        ctx.strokeStyle=`rgba(74,126,216,${opacity})`;
+        ctx.lineWidth=width;
+        ctx.lineCap='round';
+        ctx.lineJoin='round';
+        ctx.stroke();
+      }
+    }
+    if(active){
+      ctx.beginPath();
+      ctx.arc(mouse.x,mouse.y,4,0,Math.PI*2);
+      ctx.fillStyle='#0140A6';
+      ctx.fill();
+    }
+    if(points.length>0&&!active)points.shift();
+    active=false;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* =================== REVEAL =================== */
+const revIO=new IntersectionObserver((ents)=>{
+  ents.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");revIO.unobserve(e.target);}});
+},{threshold:.08,rootMargin:"0px 0px -5% 0px"});
+function observeReveals(){$$(".reveal:not(.visible)").forEach((el,i)=>{ if(el.closest('.photo-grid')&&!el.style.transitionDelay){} revIO.observe(el);});}
+/* stagger photo tiles & adv */
+$$(".photo-grid").forEach(g=>$$(".tile",g).forEach((t,i)=>t.style.transitionDelay=(Math.min(i,8)*.05)+"s"));
+$$(".video-grid .vcard").forEach((v,i)=>v.style.transitionDelay=(Math.min(i%6,6)*.05)+"s");
+observeReveals();
+
+/* =================== COUNTERS =================== */
+(function(){
+  const cnt=$("#counters");if(!cnt)return;
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{if(e.isIntersecting){$$(".num",cnt).forEach(runCount);io.disconnect();}});
+  },{threshold:.4});
+  io.observe(cnt);
+  function runCount(el){
+    const target=+el.dataset.target,suf=el.dataset.suffix||"",dur=1500,start=performance.now();
+    function tick(now){
+      const p=Math.min((now-start)/dur,1),eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(eased*target)+suf;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+})();
+
+/* =================== ACCORDIONS =================== */
+$$("[data-acc]").forEach(item=>{
+  const head=item.querySelector(".acc-head, .faq-q");
+  const body=item.querySelector(".acc-body, .faq-a");
+  head.addEventListener("click",()=>{
+    const open=item.classList.contains("open");
+    if(open){item.classList.remove("open");body.style.maxHeight=0;
+      const ic=item.querySelector(".acc-icon");if(ic)ic.textContent="+";
+    }else{
+      item.classList.add("open");body.style.maxHeight=body.scrollHeight+"px";
+      const ic=item.querySelector(".acc-icon");if(ic)ic.textContent="–";
+    }
+  });
+});
+/* recalc open accordion heights on lang switch / resize */
+function recalcAcc(){$$("[data-acc].open").forEach(i=>{const b=i.querySelector(".acc-body, .faq-a");b.style.maxHeight=b.scrollHeight+"px";});}
+$$(".lang-btn").forEach(b=>b.addEventListener("click",()=>setTimeout(recalcAcc,40)));
+addEventListener("resize",recalcAcc);
+
+/* =================== SUBFILTERS =================== */
+$$(".subfilter").forEach(sf=>{
+  sf.addEventListener("click",e=>{
+    const btn=e.target.closest("button");if(!btn)return;
+    const sub=btn.dataset.sub,cat=sf.dataset.cat;
+    $$("button",sf).forEach(b=>b.classList.toggle("active",b===btn));
+    $$(`[data-grid="${cat}"] .tile`).forEach(t=>{
+      t.classList.toggle("hide",!(sub==="all"||t.dataset.sub===sub));
+    });
+  });
+});
+
+/* =================== FILTER TABS (scroll) =================== */
+$("#filterTabs").addEventListener("click",e=>{
+  const btn=e.target.closest("button");if(!btn)return;
+  const t=btn.dataset.target;
+  let el;
+  if(t==="all")el=$("#portfolio");
+  else if(t==="video")el=$("#video");
+  else el=$("#case-"+t);
+  if(el){const y=el.getBoundingClientRect().top+scrollY-(parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h"))+10);scrollTo({top:y,behavior:"smooth"});}
+});
+
+/* =================== SCROLL SPY (nav) =================== */
+(function(){
+  const map=[["#about","about"],["#services","services"],["#portfolio","portfolio"],["#video","video"],["#process","process"],["#faq","faq"]];
+  const links=$$("#navMenu a");
+  const spy=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{
+      if(e.isIntersecting){
+        const id=e.target.id;
+        links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+id));
+      }
+    });
+  },{rootMargin:"-45% 0px -50% 0px"});
+  ["about","services","portfolio","video","process","faq"].forEach(id=>{const el=document.getElementById(id);if(el)spy.observe(el);});
+})();
+
+/* =================== FILTER SPY (portfolio) =================== */
+(function(){
+  const tabBtns=$$("#filterTabs button");
+  const caseSpy=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{
+      if(e.isIntersecting){
+        const cat=e.target.dataset.cat;
+        tabBtns.forEach(b=>b.classList.toggle("active",b.dataset.target===cat));
+      }
+    });
+  },{rootMargin:"-30% 0px -60% 0px"});
+  $$(".case").forEach(c=>caseSpy.observe(c));
+})();
+
+/* =================== VIDEO HOVER =================== */
+function vimeoSrc(id,bg){
+  return `https://player.vimeo.com/video/${id}?${bg?'background=1&autoplay=1&muted=1&loop=1&':'autoplay=1&'}controls=${bg?0:1}&title=0&byline=0&portrait=0`;
+}
+$$(".vcard").forEach(card=>{
+  const id=card.dataset.vid;let frame=null;
+  card.addEventListener("mouseenter",()=>{
+    if(frame)return;
+    frame=document.createElement("iframe");
+    frame.src=vimeoSrc(id,true);frame.allow="autoplay; fullscreen";frame.setAttribute("frameborder","0");
+    card.appendChild(frame);
+  });
+  card.addEventListener("mouseleave",()=>{if(frame){frame.remove();frame=null;}});
+  card.addEventListener("click",()=>openVideoLB(id));
+});
+
+/* =================== LIGHTBOX =================== */
+const lb=$("#lightbox"),lbStage=$("#lbStage"),lbPrev=$("#lbPrev"),lbNext=$("#lbNext");
+let lbList=[],lbIdx=0,lbType="photo";
+function openLB(){lb.classList.add("open");document.body.style.overflow="hidden";}
+function closeLB(){lb.classList.remove("open");document.body.style.overflow="";lbStage.innerHTML="";}
+function renderLB(){
+  if(lbType==="video"){
+    lbPrev.style.display=lbNext.style.display="none";
+    lbStage.innerHTML=`<div class="lb-video"><iframe src="${vimeoSrc(lbList[lbIdx],false)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen frameborder="0" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></div>`;
+  }else{
+    lbPrev.style.display=lbNext.style.display=lbList.length>1?"flex":"none";
+    const f=lbList[lbIdx];
+    lbStage.innerHTML=`<img src="${f}" alt="" style="max-width:100%;max-height:82vh;border-radius:10px;display:block;object-fit:contain" />`;
+  }
+}
+function openPhotoLB(file,grid){
+  lbType="photo";
+  lbList=$$(`.tile:not(.hide)`,grid).map(t=>t.dataset.file);
+  lbIdx=Math.max(0,lbList.indexOf(file));renderLB();openLB();
+}
+function openVideoLB(id){lbType="video";lbList=[id];lbIdx=0;renderLB();openLB();}
+$$(".tile").forEach(t=>t.addEventListener("click",()=>openPhotoLB(t.dataset.file,t.closest(".photo-grid"))));
+lbPrev.addEventListener("click",()=>{lbIdx=(lbIdx-1+lbList.length)%lbList.length;renderLB();});
+lbNext.addEventListener("click",()=>{lbIdx=(lbIdx+1)%lbList.length;renderLB();});
+$("#lbClose").addEventListener("click",closeLB);
+lb.addEventListener("click",e=>{if(e.target===lb)closeLB();});
+addEventListener("keydown",e=>{
+  if(!lb.classList.contains("open"))return;
+  if(e.key==="Escape")closeLB();
+  else if(e.key==="ArrowLeft"&&lbType==="photo")lbPrev.click();
+  else if(e.key==="ArrowRight"&&lbType==="photo")lbNext.click();
+});
+</script>
+</body>
+</html>
